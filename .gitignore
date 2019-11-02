@@ -1,1 +1,11 @@
+# macOS
+.DS_Store
 data/
+.ipynb_checkpoints/
+figures/
+DataScience2019_MRI/
+__MAXOSX/
+.idea/
+__pycache__/
+autoencoder/
+old_DataScience2019_MRI/
