@@ -103,7 +103,7 @@ class Autoencoder:
                intermediate):
 
         x = intermediate
-        for i, layer in enumerate(self.layers[::-1][:-1]):
+        for i, layer in enumerate(self.layers[::-1][1:]):
             x = tf.layers.dense(x, layer, use_bias=True, name='input_layer_2_' + str(i),
                                 activation=self.activation,
                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(self.regularization))
@@ -198,7 +198,7 @@ class Autoencoder:
                 learning_rate = tf.train.exponential_decay(learning_rate, global_step, decay_steps, decay)
 
                 # Gradients and update operation for training the model.
-                opt = tf.train.AdadeltaOptimizer(learning_rate)
+                opt = tf.train.AdamOptimizer(learning_rate)
                 update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 
                 with tf.control_dependencies(update_ops):
