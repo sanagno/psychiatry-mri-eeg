@@ -156,7 +156,7 @@ class AutoencodeSeqPredict:
 
         self.input_reconstructed = self.decode(self.intermediate_representation)
 
-        self.predictions = self.predict_classes(self.intermediate_representation)
+        self.predictions = self.graph_predict_classes(self.intermediate_representation)
 
         self.sequence_graph(self.intermediate_representation)
         self.sequential_generation_graph()
@@ -242,7 +242,7 @@ class AutoencodeSeqPredict:
 
         self.sequence_loss = tf.reduce_mean(loss_per_batch_sample) * self.beta
 
-    def predict_classes(self, intermediate):
+    def graph_predict_classes(self, intermediate):
 
         x = intermediate
         for i, layer in enumerate(self.prediction_layers):
@@ -323,7 +323,7 @@ class AutoencodeSeqPredict:
                 saver = tf.train.Saver()
                 saver.restore(sess, tf.train.latest_checkpoint(log_path))
 
-                return self.predict_with_sess(sess, data)
+                return self.predict_sequences_with_sess(sess, data)
 
     def reconstruct(self,
                     data,
