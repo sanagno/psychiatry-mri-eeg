@@ -432,6 +432,7 @@ class AutoencodeSeqPredict:
             class_weights=None,
             n_epochs=350,
             decay_steps=None,
+            batch_size=64,
             learning_rate=None,
             decay=None,
             log_path=None,
@@ -446,7 +447,7 @@ class AutoencodeSeqPredict:
 
         if decay_steps is None:
             # empirical
-            decay_steps = data.shape[0] // 64 * 20
+            decay_steps = data.shape[0] // batch_size * 20
 
         if learning_rate is None:
             learning_rate = 0.001
@@ -498,7 +499,7 @@ class AutoencodeSeqPredict:
                     prediction_loss = 0
                     sequence_loss = 0
 
-                    for rows in get_batches(list(range(data.shape[0])), batch_size=64):
+                    for rows in get_batches(list(range(data.shape[0])), batch_size=batch_size):
                         rows_features = data[rows]
                         rows_masks = data_mask[rows]
                         rows_predictions = data_labels[rows]
