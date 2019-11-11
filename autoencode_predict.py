@@ -139,17 +139,14 @@ class AutoencodePredict:
             (tf.transpose(self.true_predictions), tf.transpose(self.predictions), self.pos_weights, self.class_weights),
             dtype=tf.float32)
 
-        self.prediction_loss = tf.reduce_mean(loss_per_class)
+        self.prediction_loss = tf.reduce_mean(loss_per_class) * self.alpha
 
         if self.use_regularization:
             self.regularization_loss = tf.losses.get_regularization_loss()
 
-            # TODO CHANGE TO ORIGINAL
             self.total_loss = self.reconstruction_loss + self.regularization_loss + self.prediction_loss
-            # self.total_loss = self.prediction_loss
         else:
             self.total_loss = self.reconstruction_loss + self.prediction_loss
-            # self.total_loss = self.prediction_loss
 
     def predict_classes(self, intermediate):
 
