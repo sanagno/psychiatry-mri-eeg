@@ -210,7 +210,6 @@ class AutoencodeSeqPredict:
     def sequence_graph(self, intermediate):
         self.ordered_disorders = tf.placeholder(tf.int32, [None, self.max_generator_size], name='ordered_disorders')
 
-        # TODO change this to embedded size
         self.embedding = tf.Variable(tf.random_uniform([self.vocab_size, self.embed_size], -1, 1), name='embedding')
         # (batch_size, max_len, hidden_size)
         self.embedded_ordered_disorders = tf.nn.embedding_lookup(self.embedding,
@@ -301,7 +300,11 @@ class AutoencodeSeqPredict:
         for rows in get_batches(list(range(data.shape[0])), batch_size=64):
             rows_features = data[rows]
 
-            preds = sess.run(self.sequences, feed_dict={self.input_: rows_features})
+            preds = sess.run(self.sequences, feed_dict={
+                self.input_: rows_features,
+                self.training: False
+            })
+
             predictions[rows] = preds
 
         return predictions
@@ -316,7 +319,6 @@ class AutoencodeSeqPredict:
         with tf.Graph().as_default():
             with tf.Session() as sess:
                 self.build_graph()
-                self.sequential_generation_graph()
 
                 saver = tf.train.Saver()
                 saver.restore(sess, tf.train.latest_checkpoint(log_path))
