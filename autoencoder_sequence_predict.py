@@ -176,9 +176,9 @@ class AutoencodeSeqPredict:
             (tf.transpose(self.true_predictions), tf.transpose(self.predictions), self.pos_weights, self.class_weights),
             dtype=tf.float32)
 
-        self.prediction_loss = tf.reduce_mean(loss_per_class)
+        self.prediction_loss = tf.reduce_mean(loss_per_class) * self.alpha
 
-        self.total_loss = self.reconstruction_loss + self.prediction_loss * self.alpha + self.sequence_loss * self.beta
+        self.total_loss = self.reconstruction_loss + self.prediction_loss + self.sequence_loss
 
         if self.use_regularization:
             self.regularization_loss = tf.losses.get_regularization_loss()
@@ -241,7 +241,7 @@ class AutoencodeSeqPredict:
 
         loss_per_batch_sample = tf.reduce_sum(cross_entropy, axis=1) / tf.reduce_sum(mask, axis=1)
 
-        self.sequence_loss = tf.reduce_mean(loss_per_batch_sample)
+        self.sequence_loss = tf.reduce_mean(loss_per_batch_sample) * self.beta
 
     def predict_classes(self, intermediate):
 
