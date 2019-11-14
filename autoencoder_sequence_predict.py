@@ -6,19 +6,18 @@ import warnings
 import os
 
 
-def count_correct(out1, out2, eod_token):
+def count_correct(out1, out2, num_classes):
     # out2 is the prediction
     total_tokens = 0
     correct_tokens = 0
     for o1, o2 in zip(out1.astype(np.int32), out2.astype(np.int32)):
         for i, token in enumerate(o1):
-            total_tokens += 1
+            if o1[i] >= num_classes:
+                break
 
+            total_tokens += 1
             if o1[i] == o2[i]:
                 correct_tokens += 1
-
-            if o1[i] == eod_token:
-                break
 
     return correct_tokens / total_tokens
 
@@ -62,7 +61,7 @@ def f1_per_class(true, predictions):
     return f1_scores
 
 
-DEFAULT_LOG_PATH = './autoencoder_predict'
+DEFAULT_LOG_PATH = './autoencoder_seq_predict'
 
 
 # noinspection PyAttributeOutsideInit
@@ -571,14 +570,14 @@ class AutoencodeSeqPredict:
                                 print('{:.3f} '.format(sc), end='')
 
                             # accuracy based on sequence
-                            predictions = self.predict_with_sess(sess, data)
+                            predictions = self.predict_sequences_with_sess(sess, data)
                             print(' seq correct tokens train {:.4f}'.format(
-                                   count_correct(data_orders[:, 1:], predictions, self.eod_token)), end='')
+                                   count_correct(data_orders[:, 1:], predictions, self.num_classes)), end='')
 
                             # test
-                            predictions = self.predict_with_sess(sess, test_data)
+                            predictions = self.predict_sequences_with_sess(sess, test_data)
                             print(' and test {:.4f}'.format(
-                                   count_correct(test_data_orders[:, 1:], predictions, self.eod_token)), end='')
+                                   count_correct(test_data_orders[:, 1:], predictions, self.num_classes)), end='')
                             print()
 
                         saver.save(sess, os.path.join(log_path, "model"), global_step=epoch)
