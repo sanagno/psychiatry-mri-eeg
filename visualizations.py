@@ -15,7 +15,7 @@ def plot_categories(embedding, classes, most_common_disorders, small_size=20, la
             else:
                 res = res & set(np.where(cls[:, k] == 0)[0])
 
-        return np.array(list(res))
+        return np.array(list(res), dtype=np.int16)
 
     blue = sns.color_palette("Blues")[-2]
     red = sns.color_palette("Reds")[-2]
