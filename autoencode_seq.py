@@ -82,8 +82,8 @@ class AutoencodeSeq:
         self.input_mask = tf.placeholder(tf.float32, shape=[None, self.number_of_features], name='input_mask')
 
         # placeholders used to balance the loss for individual classes and predictions
-        self.pos_weights = tf.placeholder(tf.float32, shape=[5], name='pos_weights')
-        self.class_weights = tf.placeholder(tf.float32, shape=[5], name='class_weights')
+        self.pos_weights = tf.placeholder(tf.float32, shape=[self.num_classes], name='pos_weights')
+        self.class_weights = tf.placeholder(tf.float32, shape=[self.num_classes], name='class_weights')
 
         self.intermediate_representation = self.encode(self.input_)
 
