@@ -40,7 +40,8 @@ def f1_per_class(true, predictions):
         warnings.simplefilter("ignore")
         f1_scores = list()
         for i in range(true.shape[1]):
-            f1_scores.append(f1_score(true[:, i], predictions[:, i], average='macro'))
+#            f1_scores.append(f1_score(true[:, i], predictions[:, i], average='macro'))
+            f1_scores.append(f1_score(true[:, i], predictions[:, i]))
 
     return f1_scores
 
