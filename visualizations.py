@@ -28,7 +28,8 @@ def plot_categories(embedding, classes, most_common_disorders, small_size=20, la
         ax[i].scatter(embedding[only_disorder, 0], embedding[only_disorder, 1],
                       c=[red for _ in range(len(only_disorder))], s=large_size)
         # ax[i].set_gca().set_aspect('equal', 'datalim')
-        ax[i].set_title('Existence of disorder: ' + most_common_disorders[i], fontsize=10)
+        ax[i].set_title('Existence of disorder:\n' + most_common_disorders[i][:25], fontsize=10)
+        ax[i].axis('off')
 
     indx = np.where(np.sum(classes, axis=1) > 0)[0]
     ax[-1].scatter(embedding[indx, 0], embedding[indx, 1], c=[blue for _ in range(len(indx))], label='no disorder',
@@ -40,9 +41,11 @@ def plot_categories(embedding, classes, most_common_disorders, small_size=20, la
     indx = np.where(np.sum(classes, axis=1) == len(most_common_disorders) + 1)[0]
     ax[-1].scatter(embedding[indx, 0], embedding[indx, 1], c=[red for _ in range(len(indx))],
                    label='only this disorder', s=large_size)
-    ax[-1].set_title('No disorder diagnosed', fontsize=10)
+    ax[-1].set_title('No disorder', fontsize=10)
+    ax[-1].axis('off')
 
     ax[-1].legend()
 
     plt.tight_layout()
     plt.show()
+

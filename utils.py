@@ -4,18 +4,6 @@ import numpy as np
 import warnings
 
 
-# total recall
-def precision_recall(true, predictions):
-    indices = np.where(true == 1)
-    total = len(indices[0])
-    found = 0
-    for i, j in zip(indices[0], indices[1]):
-        found += predictions[i][j]
-
-    # total precision, total recall
-    return found / np.sum(predictions), found / total
-
-
 def count_correct(out1, out2, num_classes):
     # out2 is the prediction
     total_tokens = 0
@@ -45,13 +33,20 @@ def f1_per_class(true, predictions):
 
     return f1_scores
 
-
-def multi_label_accuracy(true, predictions):
+def multi_label_accuracy_precision_recall(true, predictions):
+    # returns the percentage of patients that were diagnosed correctly with all disorders
     if not issubclass(predictions.dtype.type, np.integer):
         predictions = before_softmax_to_predictions(predictions)
+    
+    accuracies = []
+    precisions = []
+    recalls = []
+    for i in range(true.shape[1]):
+        accuracies.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(true[:, i] + predictions[:, i] > 0))
+        precisions.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(predictions[:, i] > 0))
+        recalls.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(predictions[:, i] > 0))
 
-    return 1 - np.sum((true - predictions) ** 2) / (true.shape[0] * true.shape[1])
-
+    return np.mean(accuracies), np.mean(precisions), np.mean(recalls)
 
 def get_batches(iterable, batch_size=64, do_shuffle=True):
     if do_shuffle:
