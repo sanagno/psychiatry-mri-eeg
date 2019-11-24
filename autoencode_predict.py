@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import os
-from utils import get_batches, f1_per_class, before_softmax_to_predictions, multi_label_accuracy
+from utils import get_batches, f1_per_class, before_softmax_to_predictions, multi_label_accuracy_precision_recall
 
 
 DEFAULT_LOG_PATH = './autoencoder_predict'
@@ -362,21 +362,21 @@ class AutoencodePredict:
                     if epoch % print_every_epochs == 0:
                         if verbose and validation:
                             predictions_train = self.predict_with_sess(sess, data)
-                            train_accuracy = multi_label_accuracy(data_labels, predictions_train)
+                            train_metrics = multi_label_accuracy_precision_recall(data_labels, predictions_train)
 
                             predictions_test = self.predict_with_sess(sess, test_data)
-                            test_accuracy = multi_label_accuracy(test_data_labels, predictions_test)
+                            test_metrics = multi_label_accuracy_precision_recall(test_data_labels, predictions_test)
 
                             if self.use_regularization:
                                 print('At epoch {:4d} rec_loss: {:8.4f} reg_loss: {:8.4f} pred_loss: {:8.4f} train_'
                                       'acc: {:.4f} test_acc {:.4f}'.format(epoch, reconstruction_loss,
                                                                            regularization_loss, prediction_loss,
-                                                                           train_accuracy, test_accuracy))
+                                                                           train_metrics[0], test_metrics[0]))
                             else:
                                 print('At epoch {:4d} rec_loss: {:8.4f} pred_loss: {:8.4f} train_'
                                       'acc: {:.4f} test_acc {:.4f}'.format(epoch, reconstruction_loss,
                                                                            prediction_loss,
-                                                                           train_accuracy, test_accuracy))
+                                                                           train_metrics[0], test_metrics[0]))
 
                             f1_scores = f1_per_class(data_labels, predictions_train)
                             print('\ttrain f1_scores: ', end='')
@@ -390,4 +390,3 @@ class AutoencodePredict:
                             print()
 
                         saver.save(sess, os.path.join(log_path, "model"), global_step=epoch)
-

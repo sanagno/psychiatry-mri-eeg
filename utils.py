@@ -28,10 +28,11 @@ def f1_per_class(true, predictions):
         warnings.simplefilter("ignore")
         f1_scores = list()
         for i in range(true.shape[1]):
-#            f1_scores.append(f1_score(true[:, i], predictions[:, i], average='macro'))
+            # f1_scores.append(f1_score(true[:, i], predictions[:, i], average='macro'))
             f1_scores.append(f1_score(true[:, i], predictions[:, i]))
 
     return f1_scores
+
 
 def multi_label_accuracy_precision_recall(true, predictions):
     # returns the percentage of patients that were diagnosed correctly with all disorders
@@ -47,6 +48,7 @@ def multi_label_accuracy_precision_recall(true, predictions):
         recalls.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(predictions[:, i] > 0))
 
     return np.mean(accuracies), np.mean(precisions), np.mean(recalls)
+
 
 def get_batches(iterable, batch_size=64, do_shuffle=True):
     if do_shuffle:
