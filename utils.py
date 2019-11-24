@@ -45,7 +45,7 @@ def multi_label_accuracy_precision_recall(true, predictions):
     for i in range(true.shape[1]):
         accuracies.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(true[:, i] + predictions[:, i] > 0))
         precisions.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(predictions[:, i] > 0))
-        recalls.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(predictions[:, i] > 0))
+        recalls.append(np.sum((true[:, i] > 0) & (predictions[:, i] > 0)) / np.sum(true[:, i] > 0))
 
     return np.mean(accuracies), np.mean(precisions), np.mean(recalls)
 
