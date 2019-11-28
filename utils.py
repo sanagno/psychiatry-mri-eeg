@@ -34,6 +34,13 @@ def f1_per_class(true, predictions):
     return f1_scores
 
 
+def accuracy_per_subject(true, predictions):
+    if not issubclass(predictions.dtype.type, np.integer):
+        predictions = before_softmax_to_predictions(predictions)
+
+    return 1 - np.sum(np.sum((true - predictions) ** 2, axis=1) > 0) / len(true)
+
+
 def multi_label_accuracy_precision_recall(true, predictions):
     # returns the percentage of patients that were diagnosed correctly with all disorders
     if not issubclass(predictions.dtype.type, np.integer):
