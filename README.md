@@ -7,7 +7,7 @@ This project is part of the Data Science Lab (Fall Semester 2019) at ETH.
 | ------------- | ------------- |
 | Adamos Solomou  | solomoua@student.ethz.ch  |
 | Anagnostidis Sotiris  | sanagnos@student.ethz.ch  |
-| Vasilakopoulos George  | gvasilak@student.ethz.ch  |
+| Vasilakopoulos Georgios  | gvasilak@student.ethz.ch  |
 
 ## Project structure
 
