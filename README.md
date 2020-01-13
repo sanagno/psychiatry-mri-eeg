@@ -24,7 +24,7 @@ This project is part of the Data Science Lab (Fall Semester 2019) at ETH.
     ├── data_driven_clusters                # final "new" disorders obtained, received from the clustering
     ├── preprocessing                       # includes useful statistics extracted from the data originally - many of the results and methods here not displayed to ensure data transparency
       └── imputation_methods.ipynb          # different techniques explored to fill missing values of the final cleaned version of the data provided
-    ├── reports                       
+    ├── documentation                       
       ├── poster.pdf
       └── report.pdf
 
